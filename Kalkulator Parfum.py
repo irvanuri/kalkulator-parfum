@@ -3,11 +3,14 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 import numpy as np
 
+# === Background dan overlay test dengan Unsplash ===
+IMAGE_URL = "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2"
+
 st.markdown(
     f"""
     <style>
     .stApp {{
-        background-image: url("{https://images.unsplash.com/photo-1515378791036-0648a3ef77b2}");
+        background-image: url("{IMAGE_URL}");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -19,14 +22,13 @@ st.markdown(
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0,0,0,0.4);
+        background-color: rgba(0,0,0,0.4); /* efek gelap transparan */
         z-index: -1;
     }}
     </style>
     """,
     unsafe_allow_html=True
 )
-
 # === DATA RASIO ===
 RASIO_OPTIONS = {
     "1:1": (1, 1),
@@ -98,6 +100,7 @@ if st.button("Hitung Komposisi"):
         "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
         unsafe_allow_html=True
     )
+
 
 
 
