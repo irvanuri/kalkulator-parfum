@@ -3,13 +3,11 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 import numpy as np
 
-IMAGE_URL = "https://drive.google.com/uc?export=view&id=17WSJ12XxRFpqu0tO9sr-Ut1ce4TKYveD"
-
 st.markdown(
     f"""
     <style>
     .stApp {{
-        background-image: url("{IMAGE_URL}");
+        background-image: url("{https://drive.google.com/uc?export=view&id=17WSJ12XxRFpqu0tO9sr-Ut1ce4TKYveD}");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -100,6 +98,7 @@ if st.button("Hitung Komposisi"):
         "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
         unsafe_allow_html=True
     )
+
 
 
 
