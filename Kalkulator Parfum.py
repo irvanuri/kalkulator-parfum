@@ -67,10 +67,9 @@ if volume_list:
     )
     st.table(df)
     st.markdown("""
-<div style="color: #555; font-size:16px; text-align:center;">
-<b>Ketahanan Parfum</b> tergantung kualitas bahan seperti Bibit, Alkohol, serta Fixative  
-serta bahan lainnya yang dipakai.<br>
-<span style="color:#E91E63; font-weight:bold;">KEEP SMART AND LET'S MAKE YOUR PERFUME</span>
+<div style="color: #FFD700; font-size:16px; text-align:center; font-weight:bold;">
+The longevity of a perfume depends on the quality of ingredients such as the fragrance concentrate, alcohol, fixative, and other materials used.<br>
+KEEP SMART AND LET'S MAKE YOUR PERFUME!
 </div>
 """, unsafe_allow_html=True)
 
@@ -82,4 +81,5 @@ serta bahan lainnya yang dipakai.<br>
         file_name="komposisi_parfum.csv",
         mime="text/csv"
     )
+
 
