@@ -68,7 +68,7 @@ if volume_list:
     st.table(df)
     st.markdown("""
 <div style="color: #FFD700; font-size:16px; text-align:center; font-weight:bold;">
-The longevity of a perfume depends on the quality of ingredients such as the fragrance concentrate, alcohol, fixative, and other materials used.<br>
+Ketahanan dan Keawetan Parfum yang Anda buat tergantung dari kualitas bahan  yang digunakan seperti: Bibit Parfum, Alkohol Absolute 96% serta Fixative<br>
 KEEP SMART AND LET'S MAKE YOUR PERFUME!
 </div>
 """, unsafe_allow_html=True)
@@ -81,5 +81,6 @@ KEEP SMART AND LET'S MAKE YOUR PERFUME!
         file_name="komposisi_parfum.csv",
         mime="text/csv"
     )
+
 
 
