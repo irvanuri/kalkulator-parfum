@@ -7,7 +7,7 @@ st.markdown(
     f"""
     <style>
     .stApp {{
-        background-image: url("{https://drive.google.com/uc?export=view&id=17WSJ12XxRFpqu0tO9sr-Ut1ce4TKYveD}");
+        background-image: url("{https://images.unsplash.com/photo-1515378791036-0648a3ef77b2}");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -98,6 +98,7 @@ if st.button("Hitung Komposisi"):
         "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
         unsafe_allow_html=True
     )
+
 
 
 
