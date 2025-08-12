@@ -75,7 +75,7 @@ if st.button("Hitung Komposisi"):
         unsafe_allow_html=True
     )
 
-    )
+
 
 
 
