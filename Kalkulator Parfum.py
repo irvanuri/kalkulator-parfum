@@ -1,100 +1,73 @@
-import csv
-from colorama import Fore, Style, init
-from tabulate import tabulate
+import streamlit as st
+import pandas as pd
 from sklearn.linear_model import LinearRegression
 import numpy as np
 
-init(autoreset=True)
-
 # === DATA RASIO ===
-RASIO_LIST = {
-    "1": (1, 1),
-    "2": (2, 1),
-    "3": (3, 1),
-    "4": (1, 2),
-    "5": (2, 3)
+RASIO_OPTIONS = {
+    "1:1": (1, 1),
+    "2:1": (2, 1),
+    "3:1": (3, 1),
+    "4:1": (4, 1),
 }
 
-# === TRAINING MODEL UNTUK SETIAP RASIO ===
-models = {}
-for key, (bibit_ratio, alkohol_ratio) in RASIO_LIST.items():
-    X = []
-    y_bibit = []
-    y_alkohol = []
-    for vol in range(10, 101):
-        total_part = bibit_ratio + alkohol_ratio
-        bibit_ml = (bibit_ratio / total_part) * vol
-        alkohol_ml = (alkohol_ratio / total_part) * vol
-        X.append([vol])
-        y_bibit.append(bibit_ml)
-        y_alkohol.append(alkohol_ml)
+# === ML SEDERHANA UNTUK PREDIKSI ===
+def train_ml():
+    X = np.arange(10, 101).reshape(-1, 1)  # volume 10-100 ml
+    y = X  # identitas (output = input)
+    model = LinearRegression()
+    model.fit(X, y)
+    return model
 
-    model_bibit = LinearRegression().fit(X, y_bibit)
-    model_alkohol = LinearRegression().fit(X, y_alkohol)
-    models[key] = (model_bibit, model_alkohol)
+model_ml = train_ml()
 
-# === FUNGSI HITUNG KOMPOSISI ===
-def hitung_komposisi_ml(volume, ratio_key, use_fixative=False, persen_fixative=5):
-    model_bibit, model_alkohol = models[ratio_key]
-    bibit = round(model_bibit.predict([[volume]])[0])
-    alkohol = round(model_alkohol.predict([[volume]])[0])
-    fixative = 0
-    if use_fixative:
-        fixative = round((persen_fixative / 100) * volume)
-        alkohol = volume - (bibit + fixative)
-    return bibit, fixative, alkohol
+# === HITUNG KOMPOSISI ===
+def hitung_komposisi(volume, rasio_bibit, rasio_alkohol, persen_fixative):
+    total_parts = rasio_bibit + rasio_alkohol
+    bibit = round((rasio_bibit / total_parts) * volume)
+    alkohol = round((rasio_alkohol / total_parts) * volume)
+    fixative = round((persen_fixative / 100) * volume) if persen_fixative > 0 else 0
+    return bibit, alkohol, fixative
 
-# === PILIH RASIO ===
-def pilih_rasio():
-    print("\nPilih rasio Bibit : Alkohol")
-    for kode, (b, a) in RASIO_LIST.items():
-        print(f"{kode}. {b}:{a}")
-    while True:
-        pilihan = input("Masukkan pilihan rasio: ").strip()
-        if pilihan in RASIO_LIST:
-            return pilihan
-        else:
-            print(Fore.RED + "⚠ Pilihan tidak valid." + Style.RESET_ALL)
+# === UI STREAMLIT ===
+st.title("💐 Kalkulator Komposisi Parfum")
 
-# === MENU VOLUME ===
-def pilih_volume():
-    while True:
-        try:
-            vol = float(input("Masukkan volume parfum (ml): "))
-            if 10 <= vol <= 100:
-                return vol
-            else:
-                print(Fore.RED + "⚠ Volume harus 10–100 ml" + Style.RESET_ALL)
-        except ValueError:
-            print(Fore.RED + "⚠ Masukkan angka valid!" + Style.RESET_ALL)
+kategori = st.selectbox("Pilih kategori parfum", ["Eau de Parfum", "Eau de Toilette", "Eau de Cologne", "Custom"])
 
-# === MENU FIXATIVE ===
-def pilih_fixative():
-    while True:
-        pilihan = input("Gunakan fixative? (y/n): ").strip().lower()
-        if pilihan == "y":
-            return True
-        elif pilihan == "n":
-            return False
-        else:
-            print("⚠ Pilihan tidak valid.")
+if kategori == "Eau de Parfum":
+    default_rasio = "2:1"
+elif kategori == "Eau de Toilette":
+    default_rasio = "1:1"
+elif kategori == "Eau de Cologne":
+    default_rasio = "1:2"
+else:
+    default_rasio = "1:1"
 
-# === MAIN PROGRAM ===
-def main():
-    print(Fore.GREEN + Style.BRIGHT + "=== Kalkulator Komposisi Parfum (ML Mode) ===" + Style.RESET_ALL)
-    ratio_key = pilih_rasio()
-    volume = pilih_volume()
-    use_fix = pilih_fixative()
+rasio_str = st.selectbox("Pilih rasio Bibit:Alkohol", list(RASIO_OPTIONS.keys()), index=list(RASIO_OPTIONS.keys()).index(default_rasio))
+rasio_bibit, rasio_alkohol = RASIO_OPTIONS[rasio_str]
 
-    bibit, fixative, alkohol = hitung_komposisi_ml(volume, ratio_key, use_fixative=use_fix)
+volume_input = st.number_input("Masukkan volume parfum (ml)", min_value=1.0, step=1.0)
 
-    headers = ["Volume (ml)", "Bibit (ml)", "Fixative (ml)", "Alkohol (ml)"]
-    tabel = [[volume, bibit, fixative, alkohol]]
+fixative_opsional = st.checkbox("Tambahkan Fixative?")
+persen_fixative = st.slider("Persentase Fixative (%)", 0, 20, 5) if fixative_opsional else 0
 
-    print("\n" + tabulate(tabel, headers=headers, tablefmt="fancy_grid"))
+if st.button("Hitung Komposisi"):
+    # Gunakan ML kalau volume tidak bulat
+    if volume_input % 1 != 0:
+        volume_pred = model_ml.predict([[volume_input]])[0][0]
+    else:
+        volume_pred = volume_input
 
-    print(Fore.CYAN + "\nThe longevity of a perfume depends on the quality of ingredients such as the fragrance concentrate, alcohol, fixative, and other materials used.")
-    print("💡 KEEP SMART AND LET'S MAKE YOUR PERFUME!\n" + Style.RESET_ALL)
+    bibit, alkohol, fixative = hitung_komposisi(volume_pred, rasio_bibit, rasio_alkohol, persen_fixative)
 
-if __name__ == "__main__":
-    main()
+    data = pd.DataFrame({
+        "Komponen": ["Bibit", "Alkohol", "Fixative"],
+        "Volume (ml)": [bibit, alkohol, fixative]
+    })
+
+    st.table(data)
+
+    st.markdown(
+        "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
+        unsafe_allow_html=True
+    )
