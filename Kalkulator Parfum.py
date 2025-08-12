@@ -33,8 +33,8 @@ kategori_pilihan = st.selectbox(
 )
 
 if kategori_pilihan == "Custom":
-    persen_bibit = st.number_input("Persentase bibit parfum (%)", min_value=0.0, max_value=100.0, value=20.0)
-    persen_fixative = st.number_input("Persentase fixative (%)", min_value=0.0, max_value=100.0, value=5.0)
+    persen_bibit = st.number_input("Persentase bibit parfum (%)", min_value=0, max_value=100, value=20)
+    persen_fixative = st.number_input("Persentase fixative (%)", min_value=0, max_value=100, value=5)
 else:
     persen_bibit = KATEGORI_PARFUM[kategori_pilihan]["persen_bibit"]
     persen_fixative = KATEGORI_PARFUM[kategori_pilihan]["persen_fixative"]
@@ -68,3 +68,4 @@ if volume_list:
         file_name="komposisi_parfum.csv",
         mime="text/csv"
     )
+
