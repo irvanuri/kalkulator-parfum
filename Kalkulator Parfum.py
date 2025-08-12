@@ -52,7 +52,6 @@ fixative_opsional = st.checkbox("Tambahkan Fixative?")
 persen_fixative = st.slider("Persentase Fixative (%)", 0, 20, 5) if fixative_opsional else 0
 
 if st.button("Hitung Komposisi"):
-    # Gunakan ML kalau volume tidak bulat
     if volume_input % 1 != 0:
         volume_pred = model_ml.predict([[volume_input]])[0][0]
     else:
@@ -60,11 +59,14 @@ if st.button("Hitung Komposisi"):
 
     bibit, alkohol, fixative = hitung_komposisi(volume_pred, rasio_bibit, rasio_alkohol, persen_fixative)
 
+    # Format ke 1 desimal dan ganti titik jadi koma
     data = pd.DataFrame({
         "No": [1, 2, 3],
         "Komponen": ["Bibit", "Alkohol", "Fixative"],
         "Volume (ml)": [bibit, alkohol, fixative]
-})
+    })
+
+    data["Volume (ml)"] = data["Volume (ml)"].round(1).astype(str).str.replace(".", ",")
 
     st.table(data)
 
@@ -72,6 +74,9 @@ if st.button("Hitung Komposisi"):
         "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
         unsafe_allow_html=True
     )
+
+    )
+
 
 
 
