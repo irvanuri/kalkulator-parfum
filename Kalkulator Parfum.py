@@ -61,6 +61,7 @@ def hitung_komposisi(volume, rasio_bibit, rasio_alkohol, persen_fixative):
 st.title("💐 Kalkulator Komposisi Parfum")
 
 kategori = st.selectbox("Pilih kategori parfum", ["Eau de Parfum", "Eau de Toilette", "Eau de Cologne", "Custom"])
+color: white;
 
 if kategori == "Eau de Parfum":
     default_rasio = "2:1"
@@ -102,6 +103,7 @@ if st.button("Hitung Komposisi"):
         "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
         unsafe_allow_html=True
     )
+
 
 
 
