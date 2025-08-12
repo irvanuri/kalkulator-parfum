@@ -10,22 +10,22 @@ st.markdown(
     f"""
     <style>
     .stApp {{
-        background-image: url("{IMAGE_URL}");
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                    url("{BACKGROUND_IMAGE_URL}");
         background-size: cover;
-        background-repeat: no-repeat;
         background-attachment: fixed;
-        color: black;
-
+        background-position: center;
+        color: white;
     }}
-    .stApp::before {{
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.4); /* efek gelap transparan */
-        z-index: -1;
+
+    /* Semua heading & teks punya shadow biar jelas */
+    h1, h2, h3, p, span {{
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    }}
+
+    /* Khusus h1 jadi hitam */
+    h1 {{
+        color: black !important;
     }}
     </style>
     """,
@@ -61,7 +61,6 @@ def hitung_komposisi(volume, rasio_bibit, rasio_alkohol, persen_fixative):
 st.title("💐 Kalkulator Komposisi Parfum")
 
 kategori = st.selectbox("Pilih kategori parfum", ["Eau de Parfum", "Eau de Toilette", "Eau de Cologne", "Custom"])
-color: white;
 
 if kategori == "Eau de Parfum":
     default_rasio = "2:1"
@@ -103,6 +102,7 @@ if st.button("Hitung Komposisi"):
         "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
         unsafe_allow_html=True
     )
+
 
 
 
