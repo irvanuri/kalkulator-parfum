@@ -1,14 +1,12 @@
 import csv
-from colorama import Fore, Style, init
-from tabulate import tabulate
-
-init(autoreset=True)
+import streamlit as st
+import pandas as pd
 
 # === DATA KATEGORI PARFUM ===
 KATEGORI_PARFUM = {
-    "1": {"nama": "Eau de Parfum", "persen_bibit": 20, "persen_fixative": 5},
-    "2": {"nama": "Eau de Toilette", "persen_bibit": 15, "persen_fixative": 5},
-    "3": {"nama": "Eau de Cologne", "persen_bibit": 8, "persen_fixative": 5}
+    "Eau de Parfum": {"persen_bibit": 20, "persen_fixative": 5},
+    "Eau de Toilette": {"persen_bibit": 15, "persen_fixative": 5},
+    "Eau de Cologne": {"persen_bibit": 8, "persen_fixative": 5},
 }
 
 # === FUNGSI PERHITUNGAN ===
@@ -22,90 +20,51 @@ def buat_tabel(volume_list, persen_bibit, persen_fixative=5):
     data = []
     for volume in volume_list:
         bibit, fixative, alkohol = hitung_komposisi(volume, persen_bibit, persen_fixative)
-        data.append([f"{volume} ml", f"{bibit} ml", f"{fixative} ml", f"{alkohol} ml"])
+        data.append([volume, bibit, fixative, alkohol])
     return data
 
-# === FUNGSI EXPORT CSV ===
-def export_csv(data, headers, filename="komposisi_parfum.csv"):
-    with open(filename, mode="w", newline="", encoding="utf-8") as file:
-        writer = csv.writer(file)
-        writer.writerow([h.replace(Fore.MAGENTA, "").replace(Style.RESET_ALL, "") for h in headers])
-        for row in data:
-            writer.writerow(row)
-    print(Fore.GREEN + f"\n✅ Data berhasil disimpan ke {filename}\n" + Style.RESET_ALL)
+# === STREAMLIT UI ===
+st.title("💐 Kalkulator Komposisi Parfum")
 
-# === MENU PILIH KATEGORI ===
-def pilih_kategori():
-    print(Fore.GREEN + Style.BRIGHT + "=== Kalkulator Komposisi Parfum ===" + Style.RESET_ALL)
-    print("Pilih kategori parfum:")
-    for kode, info in KATEGORI_PARFUM.items():
-        print(Fore.CYAN + f"{kode}. {info['nama']} ({info['persen_bibit']}% Bibit, {info['persen_fixative']}% Fixative)")
-    print("4. Custom (masukkan persentase sendiri)" + Style.RESET_ALL)
+# Pilih kategori parfum
+kategori_pilihan = st.selectbox(
+    "Pilih kategori parfum:",
+    list(KATEGORI_PARFUM.keys()) + ["Custom"]
+)
 
-    while True:
-        pilihan = input(Fore.YELLOW + "\nMasukkan pilihan (1–4): " + Style.RESET_ALL).strip()
-        if pilihan in KATEGORI_PARFUM:
-            return KATEGORI_PARFUM[pilihan]
-        elif pilihan == "4":
-            try:
-                persen_bibit = float(input("Masukkan persentase bibit parfum (%): "))
-                persen_fixative = float(input("Masukkan persentase fixative (%): "))
-                return {"nama": "Custom", "persen_bibit": persen_bibit, "persen_fixative": persen_fixative}
-            except ValueError:
-                print(Fore.RED + "⚠ Masukkan angka yang valid!" + Style.RESET_ALL)
-        else:
-            print(Fore.RED + "⚠ Pilihan tidak valid. Coba lagi." + Style.RESET_ALL)
+if kategori_pilihan == "Custom":
+    persen_bibit = st.number_input("Persentase bibit parfum (%)", min_value=0.0, max_value=100.0, value=20.0)
+    persen_fixative = st.number_input("Persentase fixative (%)", min_value=0.0, max_value=100.0, value=5.0)
+else:
+    persen_bibit = KATEGORI_PARFUM[kategori_pilihan]["persen_bibit"]
+    persen_fixative = KATEGORI_PARFUM[kategori_pilihan]["persen_fixative"]
 
-# === MENU PILIH VOLUME ===
-def pilih_volume():
-    print("\nPilih opsi volume:")
-    print("1. Otomatis 10ml–100ml (kelipatan 5ml)")
-    print("2. Masukkan volume sendiri (pisahkan dengan koma)")
+# Pilih volume
+mode_volume = st.radio("Pilih opsi volume:", ["Otomatis 10–100ml", "Custom"])
 
-    while True:
-        pilihan = input(Fore.YELLOW + "\nMasukkan pilihan (1/2): " + Style.RESET_ALL).strip()
-        if pilihan == "1":
-            return list(range(10, 105, 5))
-        elif pilihan == "2":
-            try:
-                volume_list = [float(v.strip()) for v in input("Masukkan volume (contoh: 15, 30, 50): ").split(",")]
-                if all(10 <= v <= 100 for v in volume_list):
-                    return volume_list
-                else:
-                    print(Fore.RED + "⚠ Volume harus antara 10–100 ml" + Style.RESET_ALL)
-            except ValueError:
-                print(Fore.RED + "⚠ Masukkan angka valid!" + Style.RESET_ALL)
-        else:
-            print(Fore.RED + "⚠ Pilihan tidak valid." + Style.RESET_ALL)
+if mode_volume == "Otomatis 10–100ml":
+    volume_list = list(range(10, 105, 5))
+else:
+    volume_input = st.text_input("Masukkan volume (pisahkan dengan koma, contoh: 15, 30, 50):", "15, 30, 50")
+    try:
+        volume_list = [float(v.strip()) for v in volume_input.split(",") if v.strip()]
+    except ValueError:
+        st.error("⚠ Masukkan angka volume yang valid.")
+        volume_list = []
 
-# === MENU UTAMA ===
-def main():
-    kategori = pilih_kategori()
-    volume_list = pilih_volume()
+# Tampilkan hasil jika ada volume
+if volume_list:
+    tabel = buat_tabel(volume_list, persen_bibit, persen_fixative)
+    df = pd.DataFrame(tabel, columns=["Volume (ml)", "Bibit (ml)", "Fixative (ml)", "Alkohol (ml)"])
 
-    # Buat tabel hasil
-    tabel = buat_tabel(volume_list, kategori["persen_bibit"], kategori["persen_fixative"])
-    headers = [Fore.MAGENTA + "Volume" + Style.RESET_ALL,
-               Fore.MAGENTA + "Bibit" + Style.RESET_ALL,
-               Fore.MAGENTA + "Fixative" + Style.RESET_ALL,
-               Fore.MAGENTA + "Alkohol" + Style.RESET_ALL]
+    st.subheader(f"Hasil Komposisi untuk {kategori_pilihan}")
+    st.table(df)
 
-    print("\n" + Fore.GREEN + Style.BRIGHT + f"=== Komposisi untuk {kategori['nama']} ===" + Style.RESET_ALL)
-    print(tabulate(tabel, headers=headers, tablefmt="fancy_grid"))
-
-    # Simpan ke CSV
-    simpan = input(Fore.YELLOW + "\nSimpan hasil ke CSV? (y/n): " + Style.RESET_ALL).strip().lower()
-    if simpan == "y":
-        export_csv(tabel, headers)
-
-    # Simpan ke riwayat
-    with open("riwayat_perhitungan.txt", "a", encoding="utf-8") as f:
-        f.write(f"{kategori['nama']} - Persen Bibit: {kategori['persen_bibit']}%, Fixative: {kategori['persen_fixative']}%\n")
-        for row in tabel:
-            f.write(", ".join(row) + "\n")
-        f.write("\n")
-
-    print(Fore.CYAN + "Riwayat perhitungan disimpan ke riwayat_perhitungan.txt\n" + Style.RESET_ALL)
-
-if __name__ == "__main__":
-    main()
+    # Download CSV
+    csv_data = df.to_csv(index=False).encode("utf-8")
+    st.download_button(
+        label="💾 Download CSV",
+        data=csv_data,
+        file_name="komposisi_parfum.csv",
+        mime="text/csv"
+    )
