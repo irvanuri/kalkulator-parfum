@@ -66,13 +66,12 @@ if st.button("Hitung Komposisi"):
         "Volume (ml)": [bibit, alkohol, fixative]
 })
 
-    })
-
     st.table(data)
 
     st.markdown(
         "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
         unsafe_allow_html=True
     )
+
 
 
