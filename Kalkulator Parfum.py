@@ -4,7 +4,7 @@ from sklearn.linear_model import LinearRegression
 import numpy as np
 
 # === Background dan overlay test dengan Unsplash ===
-IMAGE_URL = "https://drive.google.com/uc?export=view&id=17WSJ12XxRFpqu0tO9sr-Ut1ce4TKYveD"
+IMAGE_URL = "https://images.unsplash.com/photo-1615634260167-c8cdede054de?fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDM4fHx8ZW58MHx8fHx8&ixlib=rb-4.0.3&q=60&w=3000"
 
 st.markdown(
     f"""
@@ -100,6 +100,7 @@ if st.button("Hitung Komposisi"):
         "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
         unsafe_allow_html=True
     )
+
 
 
 
