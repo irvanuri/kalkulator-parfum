@@ -66,6 +66,13 @@ if volume_list:
         f"Hasil Komposisi (Rasio Bibit:Alkohol = {ratio_bibit}:{ratio_alkohol}, Fixative = {persen_fixative}%)"
     )
     st.table(df)
+    st.markdown("""
+<div style="color: #555; font-size:16px; text-align:center;">
+<b>Ketahanan Parfum</b> tergantung kualitas bahan seperti Bibit, Alkohol, serta Fixative  
+serta bahan lainnya yang dipakai.<br>
+<span style="color:#E91E63; font-weight:bold;">KEEP SMART AND LET'S MAKE YOUR PERFUME</span>
+</div>
+""", unsafe_allow_html=True)
 
     # Download CSV
     csv_data = df.to_csv(index=False).encode("utf-8")
@@ -75,3 +82,4 @@ if volume_list:
         file_name="komposisi_parfum.csv",
         mime="text/csv"
     )
+
