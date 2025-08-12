@@ -61,9 +61,9 @@ if st.button("Hitung Komposisi"):
     bibit, alkohol, fixative = hitung_komposisi(volume_pred, rasio_bibit, rasio_alkohol, persen_fixative)
 
     data = pd.DataFrame({
-    "No": [1, 2, 3],
-    "Komponen": ["Bibit", "Alkohol", "Fixative"],
-    "Volume (ml)": [bibit, alkohol, fixative]
+        "No": [1, 2, 3],
+        "Komponen": ["Bibit", "Alkohol", "Fixative"],
+        "Volume (ml)": [bibit, alkohol, fixative]
 })
 
     })
@@ -74,4 +74,5 @@ if st.button("Hitung Komposisi"):
         "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
         unsafe_allow_html=True
     )
+
 
