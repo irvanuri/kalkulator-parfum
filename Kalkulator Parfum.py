@@ -24,9 +24,9 @@ model_ml = train_ml()
 # === HITUNG KOMPOSISI ===
 def hitung_komposisi(volume, rasio_bibit, rasio_alkohol, persen_fixative):
     total_parts = rasio_bibit + rasio_alkohol
-    bibit = round((rasio_bibit / total_parts) * volume, 2)
-    alkohol = round((rasio_alkohol / total_parts) * volume, 2)
-    fixative = round((persen_fixative / 100) * volume, 2) if persen_fixative > 0 else 0
+    bibit = round((rasio_bibit / total_parts) * volume, 1)
+    alkohol = round((rasio_alkohol / total_parts) * volume, 1)
+    fixative = round((persen_fixative / 100) * volume, 1) if persen_fixative > 0 else 0
     return bibit, alkohol, fixative
 
 # === UI STREAMLIT ===
@@ -72,6 +72,7 @@ if st.button("Hitung Komposisi"):
         "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
         unsafe_allow_html=True
     )
+
 
 
 
