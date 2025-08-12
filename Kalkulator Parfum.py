@@ -23,9 +23,9 @@ st.markdown(
         text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
     }}
 
-    /* Khusus h1 jadi hitam */
+    /* Khusus h1 jadi white */
     h1 {{
-        color: black !important;
+        color: white !important;
     }}
     </style>
     """,
@@ -102,6 +102,7 @@ if st.button("Hitung Komposisi"):
         "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
         unsafe_allow_html=True
     )
+
 
 
 
