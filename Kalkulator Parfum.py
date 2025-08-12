@@ -11,9 +11,9 @@ KATEGORI_PARFUM = {
 
 # === FUNGSI PERHITUNGAN ===
 def hitung_komposisi(total_ml, persen_bibit, persen_fixative=5):
-    bibit = round((persen_bibit / 100) * total_ml, 2)
-    fixative = round((persen_fixative / 100) * total_ml, 2)
-    alkohol = round(total_ml - (bibit + fixative), 2)
+    bibit = round((persen_bibit / 100) * total_ml)
+    fixative = round((persen_fixative / 100) * total_ml)
+    alkohol = round(total_ml - (bibit + fixative))
     return bibit, fixative, alkohol
 
 def buat_tabel(volume_list, persen_bibit, persen_fixative=5):
@@ -56,6 +56,7 @@ else:
 if volume_list:
     tabel = buat_tabel(volume_list, persen_bibit, persen_fixative)
     df = pd.DataFrame(tabel, columns=["Volume (ml)", "Bibit (ml)", "Fixative (ml)", "Alkohol (ml)"])
+    df = df.astype(int)
 
     st.subheader(f"Hasil Komposisi untuk {kategori_pilihan}")
     st.table(df)
@@ -68,4 +69,5 @@ if volume_list:
         file_name="komposisi_parfum.csv",
         mime="text/csv"
     )
+
 
