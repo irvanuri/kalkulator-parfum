@@ -11,7 +11,7 @@ st.markdown(
     <style>
     .stApp {{
         background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                    url("{BACKGROUND_IMAGE_URL}");
+        url("{BACKGROUND_IMAGE_URL}");
         background-size: cover;
         background-attachment: fixed;
         background-position: center;
@@ -102,6 +102,7 @@ if st.button("Hitung Komposisi"):
         "<p style='color:yellow; font-weight:bold;'>Ketahanan parfum tergantung kualitas bahan seperti Bibit, Alkohol serta Fixative serta bahan lainnya yang dipakai.<br>KEEP SMART AND LET'S MAKE YOUR PERFUME</p>",
         unsafe_allow_html=True
     )
+
 
 
 
